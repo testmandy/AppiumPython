@@ -5,6 +5,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="Android_TalkU.common.driver.*" />
+          <option value="Android_TalkU.testcases.messages.capture" />
         </list>
       </option>
     </inspection_tool>

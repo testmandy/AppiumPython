@@ -1,4 +1,5 @@
 # coding=utf-8
+import os
 import time
 from Android_TalkU.common.driver import get_driver
 
@@ -55,11 +56,21 @@ class Login:
         time.sleep(2)
         # 出现弹窗，再次点击确认
         driver.find_element_by_id("me.talkyou.app.im:id/button3").click()
+        capture()
+
+
+def capture():
+    # 截图
+    img_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..")) + '//screenshots//'
+    time2 = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
+    screen_save_path = img_folder + time2 + '.png'
+    driver.get_screenshot_as_file(screen_save_path)
 
 
 testLogin = Login("3159782580", "123456")
 testLogin.go_login()
 testLogin.login()
 testLogin.logout()
+capture()
 
 
