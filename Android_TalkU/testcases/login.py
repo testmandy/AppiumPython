@@ -1,10 +1,23 @@
 # coding=utf-8
 import os
 import time
-from Android_TalkU.common.driver import get_driver
 
-driver = get_driver()
+from Android_TalkU.utils.get_by_local import GetByLocal
+from Android_TalkU.common.base_driver import BaseDriver
 
+# 实例化driver
+base_driver = BaseDriver()
+# 调用get_driver
+driver = base_driver.get_driver()
+# 实例化GetByLocal
+starter = GetByLocal(driver)
+
+def capture(name):
+    # 截图
+    img_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "..")) + '//screenshots//'
+    time2 = time.strftime('%Y%m%d%H%M', time.localtime(time.time()))
+    screen_save_path = img_folder + time2 + '_' + name + '.png'
+    driver.get_screenshot_as_file(screen_save_path)
 
 class Login:
 
@@ -12,50 +25,48 @@ class Login:
         self.telephone = telephone
         self.password = password
 
-    @staticmethod
-    def go_login():
+    def go_login(self):
         time.sleep(3)
         # 点击-Already have account?
-        driver.find_element_by_id("me.talkyou.app.im:id/tv_already_have_account").click()
+        starter.get_element("have_account_button", "Enter").click()
 
     def login(self):
         time.sleep(2)
         # 输入手机号
-        driver.find_element_by_id("me.talkyou.app.im:id/signup_login_phone_number_area").send_keys(self.telephone)
+        starter.get_element("telephone", "Login").send_keys(self.telephone)
         # 点击Continue进入下一步
-        driver.find_element_by_class_name("android.widget.Button").click()
+        starter.get_element("continue_button", "Login").click()
         time.sleep(2)
         # 输入密码
-        driver.find_element_by_id("me.talkyou.app.im:id/password_login_edit").send_keys(self.password)
+        starter.get_element("password", "Login").send_keys(self.password)
         # 点击Login登录
-        driver.find_element_by_id("me.talkyou.app.im:id/password_login_btn").click()
+        starter.get_element("login_button", "Login").click()
         time.sleep(2)
         # 出现弹窗，点击确认
-        driver.find_element_by_id("me.talkyou.app.im:id/button1").click()
+        starter.get_element("continue_alert", "Common").click()
         time.sleep(2)
 
-    @staticmethod
-    def logout():
+    def logout(self):
         # 点击More
-        driver.find_element_by_id("me.talkyou.app.im:id/MoreLayout").click()
+        starter.get_element("More_tab", "More").click()
         time.sleep(2)
         # 点击Settings
-        driver.find_element_by_id("me.talkyou.app.im:id/more_settings").click()
+        starter.get_element("Settings", "More").click()
         time.sleep(2)
         # 点击Account Settings
-        driver.find_element_by_id("me.talkyou.app.im:id/myaccount_settings").click()
+        starter.get_element("Account_Settings", "More").click()
         time.sleep(2)
         # 点击My Devices on TalkU
-        driver.find_element_by_id("me.talkyou.app.im:id/more_my_device").click()
+        starter.get_element("My_Devices", "More").click()
         time.sleep(2)
         # 点击注销按钮
-        driver.find_element_by_id("me.talkyou.app.im:id/more_my_deactivate").click()
-        time.sleep(6)
+        starter.get_element("deactivate_button", "More").click()
+        time.sleep(10)
         # 出现弹窗，点击确认注销
-        driver.find_element_by_id("me.talkyou.app.im:id/button1").click()
+        starter.get_element("continue_alert", "Common").click()
         time.sleep(2)
         # 出现弹窗，再次点击确认
-        driver.find_element_by_id("me.talkyou.app.im:id/button3").click()
+        starter.get_element("continue2_alert", "Common").click()
         capture()
 
 
@@ -67,10 +78,11 @@ def capture():
     driver.get_screenshot_as_file(screen_save_path)
 
 
-testLogin = Login("3159782580", "123456")
-testLogin.go_login()
-testLogin.login()
-testLogin.logout()
-capture()
+if __name__ == '__main__':
+    test = Login("3159782580", "123456")
+    test.go_login()
+    test.login()
+    # test.logout()
+
 
 
