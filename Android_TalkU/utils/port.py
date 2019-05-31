@@ -3,12 +3,17 @@
 # @Author  : Mandy
 from Android_TalkU.utils.dos_cmd import DosCmd
 
+
 class Port:
     def __init__(self):
         self.dos = DosCmd()
 
     def port_is_used(self, port_num):
-        flag = None
+        '''
+        判断端口是否被占用
+        :param port_num: 检查的端口号
+        :return:布尔值flag
+        '''
         result = self.dos.excute_cmd_result("netstat -aon|findstr " + str(port_num))
         if len(result) > 0:
             flag = True
@@ -29,15 +34,14 @@ class Port:
                 if not self.port_is_used(start_port):
                     port_list.append(start_port)
                 start_port = start_port + 1
-            print(port_list)
             return port_list
         else:
             print("生成可用端口失败")
             return None
 
 
-if __name__ == '__main__':
-    port = Port()
-    port.port_is_used("4000")
-    port.create_port_list(4000, [1, 2, 3])
-    # port.create_appium_command()
+# if __name__ == '__main__':
+#     port = Port()
+#     port.port_is_used("4000")
+#     port.create_port_list(4000, [1, 2, 3])
+#     # port.create_appium_command()
