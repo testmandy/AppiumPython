@@ -1,7 +1,9 @@
 # coding=utf-8
 
 import os
+import HTMLTestRunner
 import time
+import unittest
 
 from Android_TalkU.common.base_driver import BaseDriver
 from Android_TalkU.utils.get_by_axis import GetByAxis
@@ -9,8 +11,16 @@ from Android_TalkU.utils.get_by_local import GetByLocal
 from Android_TalkU.utils.server import Server
 
 
-class ShowAds:
-    def __init__(self):
+# 继承unittest.TestCase
+class ShowAds(unittest.TestCase):
+    # def tearDown(self):
+    #     # 每个测试用例执行之后做操作
+    #     print('111')
+    #
+    # def setUp(self):
+    #     # 每个测试用例执行之前做操作
+    #     print(22222)
+    def setUp(self):
         # 实例化server
         self.server = Server()
         self.server.main()
@@ -132,13 +142,16 @@ class ShowAds:
 
 
 if __name__ == '__main__':
-    showAds = ShowAds()
-    showAds.message_list()
-    showAds.team()
-    showAds.us_sms()
-    showAds.connect()
-    showAds.redeem()
-    showAds.get_credits()
-
+    test_suite = unittest.TestSuite()  # 创建一个测试集合
+    test_suite.addTest(ShowAds('message_list'))  # 测试套件中添加测试用例
+    # test_suite.addTest(unittest.makeSuite(ShowAds))#使用makeSuite方法添加所有的测试方法
+    # 打开一个保存结果的html文件
+    now = time.strftime("%Y-%m-%d %H_%M_%S", time.localtime())
+    filename = "E:\\PycharmProjects\\TalkUAds_UITest_Python\\Android_TalkU\\report\\" + now + "_result.html"
+    fp = open(filename, 'wb')
+    runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title='api测试报告', description='测试情况')
+    # 生成执行用例的对象
+    runner.run(test_suite)
+    # 执行测试套件
 
 

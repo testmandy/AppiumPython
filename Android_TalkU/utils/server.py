@@ -3,6 +3,7 @@
 import logging
 import time
 
+
 from Android_TalkU.utils.dos_cmd import DosCmd
 from Android_TalkU.utils.port import Port
 
@@ -13,7 +14,7 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-class Server:
+class Server():
     def __init__(self):
         self.dos = DosCmd()
         global bp, port, device1
@@ -122,7 +123,7 @@ class Server:
         self.kill_server()
         self.write_file.clear_data()
         self.start_server()
-        time.sleep(5)
+        time.sleep(2)
 
 
 
